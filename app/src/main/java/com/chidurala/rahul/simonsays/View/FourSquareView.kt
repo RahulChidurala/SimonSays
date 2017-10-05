@@ -9,7 +9,7 @@ import com.chidurala.rahul.simonsays.Model.GameBoard
 import com.chidurala.rahul.simonsays.R
 
 /**
- * Created by Rahul Chidurala on 10/3/2017.
+ * Created by chrah on 10/3/2017.
  */
 
 class FourSquareView : View, GameBoard {
