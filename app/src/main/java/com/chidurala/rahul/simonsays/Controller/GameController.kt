@@ -90,9 +90,7 @@ class GameController: UserInputCompletedDelegate, GameOverDelegate {
 
     override fun gameOver() {
 
-        gameSequenceGenerator.resetSequence()
-
-        context.alert("Game over!") {
+        context.alert("Game over! Your score is: " + gameSequenceGenerator.getCurrentSequence().count()) {
 
             title = "Simon Says"
             positiveButton("Restart!") {
@@ -104,5 +102,7 @@ class GameController: UserInputCompletedDelegate, GameOverDelegate {
                 // Do nothing
             }
         }.show()
+
+        gameSequenceGenerator.resetSequence()
     }
 }
