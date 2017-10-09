@@ -13,22 +13,27 @@ typealias Sequence = ArrayList<Int>
 class GameSequenceGenerator {
 
     private val buttonCount: Int
-    private var sequenceCount: Int
+    private var sequenceStartCount: Int
 
     private val random: Random
     private var sequence: Sequence
 
     private val sequenceIncrementer = 1
 
-    constructor(gameBoard: GameBoard, sequenceCount: Int = 0) {
+    constructor(gameBoard: GameBoard, sequenceStartCount: Int = 0) {
 
         buttonCount = gameBoard.buttons.count()
-        this.sequenceCount = sequenceCount
+        this.sequenceStartCount = sequenceStartCount
 
         random = Random()
         sequence = Sequence()
 
-        createSequence(sequenceCount)
+        createSequence(sequenceStartCount)
+    }
+
+    fun getCurrentSequence(): Sequence {
+
+        return sequence
     }
 
     /**
@@ -40,6 +45,12 @@ class GameSequenceGenerator {
         addToSequence()
 
         return sequence
+    }
+
+    fun resetSequence() {
+
+        sequence.clear()
+        createSequence(1)
     }
 
     /**
@@ -57,6 +68,6 @@ class GameSequenceGenerator {
 
         val nextInt = random.nextInt(buttonCount)
         sequence.add(nextInt)
-        sequenceCount += sequenceIncrementer
+        sequenceStartCount += sequenceIncrementer
     }
 }

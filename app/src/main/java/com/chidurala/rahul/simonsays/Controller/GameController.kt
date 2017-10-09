@@ -1,48 +1,108 @@
 package com.chidurala.rahul.simonsays.Controller
 
+import android.app.AlertDialog
 import android.content.Context
+import com.chidurala.rahul.simonsays.Delegate.GameOverDelegate
+import com.chidurala.rahul.simonsays.Delegate.UserInputCompletedDelegate
 import com.chidurala.rahul.simonsays.Model.GameBoard
-import com.chidurala.rahul.simonsays.Service.ButtonLighter
-import com.chidurala.rahul.simonsays.Service.ButtonOnClick
-import com.chidurala.rahul.simonsays.Service.GameSequenceGenerator
-import com.chidurala.rahul.simonsays.Service.GameSequencePlayer
+import com.chidurala.rahul.simonsays.Service.*
+import com.chidurala.rahul.simonsays.Service.Sequence
+import org.jetbrains.anko.alert
 
 /**
  * Created by Rahul Chidurala on 10/4/2017.
  */
-class GameController {
+class GameController: UserInputCompletedDelegate, GameOverDelegate {
 
     private val context: Context
     private val gameBoard: GameBoard
     private val buttonLighters: ArrayList<ButtonLighter>
+    private var buttonOnClicks: ButtonOnClicks = ButtonOnClicks()
+    private val gameLeveler: GameLeveler
+    private val gameSequenceChecker: GameSequenceChecker
+
+    private val  gameSequenceGenerator: GameSequenceGenerator
+    private val buttonInputService: ButtonInputService
 
     constructor(context: Context, gameBoard: GameBoard) {
 
         this.context = context
         this.gameBoard = gameBoard
         buttonLighters = ArrayList()
-        for(button in gameBoard.buttons) {
 
+        val buttonCount = gameBoard.buttons.count()
+        gameSequenceGenerator = GameSequenceGenerator(gameBoard = gameBoard)
+
+        buttonInputService = ButtonInputService(this, gameSequenceGenerator.getCurrentSequence())
+
+        for (buttonIndex in 0..buttonCount-1) {
+
+            val button = gameBoard.buttons[buttonIndex]
             val buttonLighter = ButtonLighter(button)
             buttonLighters.add(buttonLighter)
             buttonLighter.darkenButton()
-            val buttonOnClick = ButtonOnClick(context, buttonLighter)
+            val buttonOnClick = ButtonOnClick(context, buttonLighter, buttonIndex, buttonInputService)
+            buttonOnClicks.add(buttonOnClick)
 
             button.setOnClickListener {
 
-                buttonOnClick.onClick()
+                buttonOnClick.userOnClick()
             }
         }
+
+        val gameSequencePlayer = GameSequencePlayer(context, buttonOnClicks)
+        gameLeveler = GameLeveler(3, gameSequenceGenerator, gameSequencePlayer, this)
+        gameSequenceChecker = GameSequenceChecker()
     }
 
     fun startGame() {
 
-        // TODO: Implement start game properly
-        val gameSequenceGenerator = GameSequenceGenerator(gameBoard, 8)
+        gameLeveler.startGame()
+    }
 
-        val gameSequencePlayer = GameSequencePlayer(context, gameBoard)
+    private fun nextLevel() {
 
-        val newSequence = gameSequenceGenerator.getNewSequence()
-        gameSequencePlayer.playSequence(newSequence)
+        gameLeveler.levelCleared()
+        buttonInputService.setCorrectSequence(gameSequenceGenerator.getCurrentSequence())
+    }
+
+    private fun wrongSequence() {
+
+        gameLeveler.levelFailed()
+    }
+
+    override fun userInputCompleted(sequence: Sequence) {
+
+        if(gameLeveler.lives > 0) {
+
+            val correct = gameSequenceChecker.checkSequence(gameSequenceGenerator.getCurrentSequence(), sequence)
+
+            if(correct) {
+
+                nextLevel()
+
+            } else {
+
+                wrongSequence()
+            }
+        }
+    }
+
+    override fun gameOver() {
+
+        gameSequenceGenerator.resetSequence()
+
+        context.alert("Game over!") {
+
+            title = "Simon Says"
+            positiveButton("Restart!") {
+
+                gameLeveler.startGame()
+            }
+
+            negativeButton("OK") {
+                // Do nothing
+            }
+        }.show()
     }
 }
