@@ -39,7 +39,6 @@ class ButtonOnClick {
 
         if(ButtonOnClick.enabled) {
 
-            ButtonOnClick.enabled = false
             buttonLighter.lightUp()
             buttonInputService.addInput(buttonId)
 
@@ -48,7 +47,6 @@ class ButtonOnClick {
                 context.runOnUiThread {
                     buttonLighter.darkenButton()
                 }
-                ButtonOnClick.enabled = true
             }
         }
     }
