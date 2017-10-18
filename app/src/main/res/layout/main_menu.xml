@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@color/menuGreen">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Simon Says"
+        android:textColor="@color/white"
+        android:textSize="40dp"
+        android:fontFamily="monospace"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="30dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medium"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        android:fontFamily="monospace"
+        android:layout_centerInParent="true"
+        android:id="@+id/btn_medium"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Easy"
+        android:textSize="30dp"
+        android:fontFamily="monospace"
+        android:textColor="@color/white"
+        android:id="@+id/btn_easy"
+        android:layout_above="@+id/btn_medium"
+        android:layout_alignLeft="@+id/btn_medium"
+        android:layout_alignRight="@+id/btn_medium"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hard"
+        android:textSize="30dp"
+        android:fontFamily="monospace"
+        android:textColor="@color/white"
+        android:id="@+id/btn_hard"
+        android:layout_alignLeft="@+id/btn_easy"
+        android:layout_alignRight="@id/btn_medium"
+        android:layout_below="@+id/btn_medium"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+
+</RelativeLayout>

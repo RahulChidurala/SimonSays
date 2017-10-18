@@ -16,9 +16,9 @@ class FourSquareView : View, GameBoard {
 
     override var buttons: ArrayList<Button>
 
-    constructor(context: Context?, viewGroup: ViewGroup) : super(context) {
+    constructor(context: Context, viewGroup: ViewGroup) : super(context) {
 
-        val view = LayoutInflater.from(this.context).inflate(R.layout.four_square, viewGroup)
+        val view = LayoutInflater.from(context).inflate(R.layout.four_square, viewGroup)
 
         val redButton: Button = view.findViewById(R.id.btn_red)
         val blueButton: Button = view.findViewById(R.id.btn_blue)

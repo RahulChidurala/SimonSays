@@ -11,8 +11,11 @@ import kotlin.concurrent.schedule
  */
 class ButtonOnClick {
 
-    public companion object {
+    companion object {
         var enabled: Boolean = true
+
+        // TODO: Replace companion object/static delay with something else
+        var delay: Long = 500
     }
 
     private val context: Context
@@ -21,7 +24,6 @@ class ButtonOnClick {
     private val buttonInputService: ButtonInputService
 
     private val timer: Timer
-    private val delay: Long = 500
 
     constructor(context: Context, buttonLighter: ButtonLighter, buttonId: Int, buttonInputService: ButtonInputService) {
 
@@ -41,7 +43,7 @@ class ButtonOnClick {
             buttonLighter.lightUp()
             buttonInputService.addInput(buttonId)
 
-            timer.schedule(delay = delay) {
+            timer.schedule(delay = ButtonOnClick.delay) {
 
                 context.runOnUiThread {
                     buttonLighter.darkenButton()
@@ -55,7 +57,7 @@ class ButtonOnClick {
 
         buttonLighter.lightUp()
 
-        timer.schedule(delay = delay) {
+        timer.schedule(delay = ButtonOnClick.delay) {
 
             context.runOnUiThread {
                 buttonLighter.darkenButton()

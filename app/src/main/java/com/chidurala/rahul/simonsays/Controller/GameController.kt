@@ -1,9 +1,8 @@
 package com.chidurala.rahul.simonsays.Controller
 
-import android.app.AlertDialog
 import android.content.Context
 import com.chidurala.rahul.simonsays.Delegate.GameOverDelegate
-import com.chidurala.rahul.simonsays.Delegate.UserInputCompletedDelegate
+import com.chidurala.rahul.simonsays.Delegate.UserInputDelegate
 import com.chidurala.rahul.simonsays.Model.GameBoard
 import com.chidurala.rahul.simonsays.Service.*
 import com.chidurala.rahul.simonsays.Service.Sequence
@@ -12,7 +11,7 @@ import org.jetbrains.anko.alert
 /**
  * Created by Rahul Chidurala on 10/4/2017.
  */
-class GameController: UserInputCompletedDelegate, GameOverDelegate {
+class GameController: UserInputDelegate, GameOverDelegate {
 
     private val context: Context
     private val gameBoard: GameBoard
@@ -57,6 +56,7 @@ class GameController: UserInputCompletedDelegate, GameOverDelegate {
 
     fun startGame() {
 
+
         gameLeveler.startGame()
     }
 
@@ -82,6 +82,19 @@ class GameController: UserInputCompletedDelegate, GameOverDelegate {
                 nextLevel()
 
             } else {
+
+                wrongSequence()
+            }
+        }
+    }
+
+    override fun userInput(userInputSequence: Sequence) {
+
+        if(gameLeveler.lives > 0) {
+
+            val correct = gameSequenceChecker.checkSequence(gameSequenceGenerator.getCurrentSequence(), userInputSequence)
+
+            if(!correct) {
 
                 wrongSequence()
             }

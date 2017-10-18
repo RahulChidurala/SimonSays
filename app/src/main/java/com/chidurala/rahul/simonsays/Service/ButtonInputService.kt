@@ -1,22 +1,21 @@
 package com.chidurala.rahul.simonsays.Service
 
-import android.widget.Button
-import com.chidurala.rahul.simonsays.Delegate.UserInputCompletedDelegate
+import com.chidurala.rahul.simonsays.Delegate.UserInputDelegate
 
 /**
  * Created by Rahul Chidurala on 10/8/2017.
  */
 class ButtonInputService {
 
-    private val userInputCompletedDelegate: UserInputCompletedDelegate
+    private val userInputDelegate: UserInputDelegate
     private var correctSequence: Sequence
 
     private var userInputSequence: Sequence
     private var userInputLimit: Int
 
-    constructor(userInputCompletedDelegate: UserInputCompletedDelegate, correctSequence: Sequence) {
+    constructor(userInputDelegate: UserInputDelegate, correctSequence: Sequence) {
 
-        this.userInputCompletedDelegate = userInputCompletedDelegate
+        this.userInputDelegate = userInputDelegate
         this.correctSequence = correctSequence
 
         userInputSequence = Sequence()
@@ -32,9 +31,11 @@ class ButtonInputService {
 
         userInputSequence.add(buttonId)
 
+        userInputDelegate.userInput(userInputSequence)
+
         if(userInputSequence.count() == correctSequence.count()) {
 
-            userInputCompletedDelegate.userInputCompleted(userInputSequence)
+            userInputDelegate.userInputCompleted(userInputSequence)
             userInputSequence = Sequence()
         }
     }

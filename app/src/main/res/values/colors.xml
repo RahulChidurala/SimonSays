@@ -7,4 +7,8 @@
     <color name="lightRed">#FF0000</color>
     <color name="lightBlue">#0000FF</color>
     <color name="lightGreen">#00FF00</color>
+    <color name="lightOrange">#FFDE30</color>
+    <color name="menuGreen">#55F490</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>

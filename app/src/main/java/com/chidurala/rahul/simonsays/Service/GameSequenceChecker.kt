@@ -5,18 +5,22 @@ package com.chidurala.rahul.simonsays.Service
  */
 class GameSequenceChecker {
 
+    /**
+     * Checks if the input sequence matches the correctSequence so far
+     */
     fun checkSequence(correctSequence: Sequence, inputSequence: Sequence): Boolean {
 
         var correct = true
         val correctSequenceCount = correctSequence.count()
         val inputSequenceCount = inputSequence.count()
 
-        if(correctSequenceCount != inputSequenceCount) {
+        if(inputSequenceCount > correctSequenceCount) {
 
+            // More inputs than the correct sequence
             return false
         }
 
-        for (index in 0..correctSequenceCount-1) {
+        for (index in 0..inputSequenceCount-1) {
 
             if(correctSequence[index] != inputSequence[index]) {
 

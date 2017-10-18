@@ -7,13 +7,17 @@
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     android:orientation="vertical"
-    tools:context="com.chidurala.rahul.simonsays.MainActivity">
+    tools:context="com.chidurala.rahul.simonsays.Activity.GameActivity">
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btn_start"
-        android:text="@string/start_game"/>
+        android:text="@string/start_game"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:paddingBottom="2dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

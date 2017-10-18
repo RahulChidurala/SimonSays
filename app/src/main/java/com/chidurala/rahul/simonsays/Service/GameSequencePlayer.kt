@@ -41,7 +41,8 @@ class GameSequencePlayer {
         for (buttonIndex in sequence) {
 
             iterator++
-            val scheduledTime: Long = (iterator * 1000).toLong()
+            // TODO: Replace ButtonOnClick.delay with something else
+            val scheduledTime: Long = (iterator * ButtonOnClick.delay * 2)
             Log.d("DEBUG", "Button: " + buttonIndex)
             val buttonOnClick = buttonOnClicks[buttonIndex]
             timer.schedule(scheduledTime) {
