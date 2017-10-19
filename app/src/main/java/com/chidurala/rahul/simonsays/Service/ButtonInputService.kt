@@ -31,12 +31,14 @@ class ButtonInputService {
 
         userInputSequence.add(buttonId)
 
-        userInputDelegate.userInput(userInputSequence)
-
         if(userInputSequence.count() == correctSequence.count()) {
 
             userInputDelegate.userInputCompleted(userInputSequence)
             userInputSequence = Sequence()
+            
+        } else {
+
+            userInputDelegate.userInput(userInputSequence)
         }
     }
 }
