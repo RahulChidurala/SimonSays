@@ -10,23 +10,14 @@ import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 /**
- * Created by Rahul Chidurala on 10/5/2017.
- */
+* Created by Rahul Chidurala on 10/5/2017.
+*/
 
 typealias ButtonOnClicks = ArrayList<ButtonOnClick>
 
-class GameSequencePlayer {
+class GameSequencePlayer(private val context: Context, private val buttonOnClicks: ButtonOnClicks) {
 
-    private val context: Context
-    private val buttonOnClicks: ButtonOnClicks
-
-    private val timer: Timer
-    constructor(context: Context, buttonOnClicks: ButtonOnClicks) {
-
-        this.context = context
-        this.buttonOnClicks = buttonOnClicks
-        timer = Timer()
-    }
+    private val timer: Timer = Timer()
 
     fun playSequence(sequence: Sequence) {
 
@@ -41,8 +32,7 @@ class GameSequencePlayer {
         for (buttonIndex in sequence) {
 
             iterator++
-            // TODO: Replace ButtonOnClick.delay with something else
-            val scheduledTime: Long = (iterator * ButtonOnClick.delay * 2)
+            val scheduledTime: Long = (iterator * DifficultyService.difficultyService.getSpeed() * 2)
             Log.d("DEBUG", "Button: " + buttonIndex)
             val buttonOnClick = buttonOnClicks[buttonIndex]
             timer.schedule(scheduledTime) {
@@ -61,4 +51,5 @@ class GameSequencePlayer {
             }
         }
     }
+
 }

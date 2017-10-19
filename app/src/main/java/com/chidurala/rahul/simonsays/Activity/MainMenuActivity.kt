@@ -17,6 +17,6 @@ class MainMenuActivity : AppCompatActivity() {
 
         val mainMenu = MainMenuView(this, menuArea)
 
-        val mainMenuController = MainMenuController(this, mainMenu)
+         MainMenuController(this, mainMenu)
     }
 }

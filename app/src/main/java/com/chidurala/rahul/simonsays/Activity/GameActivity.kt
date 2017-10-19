@@ -9,6 +9,7 @@ import com.chidurala.rahul.simonsays.Controller.GameController
 import com.chidurala.rahul.simonsays.Model.Difficulty
 import com.chidurala.rahul.simonsays.R
 import com.chidurala.rahul.simonsays.Service.ButtonOnClick
+import com.chidurala.rahul.simonsays.Service.DifficultyService
 import com.chidurala.rahul.simonsays.View.FourSquareView
 
 class GameActivity : AppCompatActivity() {
@@ -30,11 +31,9 @@ class GameActivity : AppCompatActivity() {
 
         val difficulty = intent.extras.get("difficulty") as? Difficulty
 
-        when(difficulty) {
+        if(difficulty != null) {
 
-            Difficulty.easy -> ButtonOnClick.delay = 500
-            Difficulty.medium -> ButtonOnClick.delay = 350
-            Difficulty.hard -> ButtonOnClick.delay = 200
+            DifficultyService.difficultyService.setDifficulty(difficulty)
         }
 
         val fourSquareView = FourSquareView(this, viewGroup = rootViewGroup)

@@ -8,24 +8,13 @@ import com.chidurala.rahul.simonsays.Delegate.GameOverDelegate
  * Created by Rahul Chidurala on 10/7/2017.
  *
  */
-class GameLeveler {
+class GameLeveler(var lives: Int, private var gameSequenceGenerator: GameSequenceGenerator, private var gameSequencePlayer: GameSequencePlayer, private val gameOverDelegate: GameOverDelegate? = null) {
 
-    private var gameSequenceGenerator: GameSequenceGenerator
-    private var gameSequencePlayer: GameSequencePlayer
-    private val gameOverDelegate: GameOverDelegate?
-
-    private val livesPerGame: Int
-    var lives: Int
+    private val livesPerGame: Int = lives
     private var sequence: Sequence
 
-    constructor(lives: Int, gameSequenceGenerator: GameSequenceGenerator, gameSequencePlayer: GameSequencePlayer, gameOverDelegate: GameOverDelegate? = null) {
-
-        this.livesPerGame = lives
+    init {
         this.lives = lives
-        this.gameSequenceGenerator = gameSequenceGenerator
-        this.gameSequencePlayer = gameSequencePlayer
-        this.gameOverDelegate = gameOverDelegate
-
         sequence = gameSequenceGenerator.getNewSequence()
     }
 
@@ -55,7 +44,6 @@ class GameLeveler {
 
         if(lives <= 0) {
 
-            // TODO: Game over!
             Log.d("GAME", "Game over!")
             gameOver()
 

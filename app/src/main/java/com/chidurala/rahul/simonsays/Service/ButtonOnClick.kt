@@ -7,33 +7,15 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 /**
- * Created by Rahul Chidurala on 10/4/2017.
- */
-class ButtonOnClick {
+* Created by Rahul Chidurala on 10/4/2017.
+*/
+class ButtonOnClick(private val context: Context, private val buttonLighter: ButtonLighter, private val buttonId: Int, private val buttonInputService: ButtonInputService) {
 
     companion object {
         var enabled: Boolean = true
-
-        // TODO: Replace companion object/static delay with something else
-        var delay: Long = 500
     }
 
-    private val context: Context
-    private val buttonLighter: ButtonLighter
-    private val buttonId: Int
-    private val buttonInputService: ButtonInputService
-
-    private val timer: Timer
-
-    constructor(context: Context, buttonLighter: ButtonLighter, buttonId: Int, buttonInputService: ButtonInputService) {
-
-        this.context = context
-        this.buttonLighter = buttonLighter
-        this.buttonId = buttonId
-        this.buttonInputService = buttonInputService
-
-        timer = Timer()
-    }
+    private val timer: Timer = Timer()
 
     fun userOnClick() {
 
@@ -42,7 +24,7 @@ class ButtonOnClick {
             buttonLighter.lightUp()
             buttonInputService.addInput(buttonId)
 
-            timer.schedule(delay = ButtonOnClick.delay) {
+            timer.schedule(delay = DifficultyService.difficultyService.getSpeed()) {
 
                 context.runOnUiThread {
                     buttonLighter.darkenButton()
@@ -55,7 +37,7 @@ class ButtonOnClick {
 
         buttonLighter.lightUp()
 
-        timer.schedule(delay = ButtonOnClick.delay) {
+        timer.schedule(delay = DifficultyService.difficultyService.getSpeed()) {
 
             context.runOnUiThread {
                 buttonLighter.darkenButton()
