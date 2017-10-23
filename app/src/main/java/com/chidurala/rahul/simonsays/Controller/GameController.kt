@@ -1,12 +1,16 @@
 package com.chidurala.rahul.simonsays.Controller
 
 import android.content.Context
+import android.util.EventLog
+import android.util.Log
+import android.view.MotionEvent
 import com.chidurala.rahul.simonsays.Delegate.GameOverDelegate
 import com.chidurala.rahul.simonsays.Delegate.UserInputDelegate
 import com.chidurala.rahul.simonsays.Model.GameBoard
 import com.chidurala.rahul.simonsays.Service.*
 import com.chidurala.rahul.simonsays.Service.Sequence
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.sdk25.coroutines.onTouch
 
 /**
 * Created by Rahul Chidurala on 10/4/2017.
@@ -99,9 +103,16 @@ class GameController(private val context: Context, gameBoard: GameBoard) : UserI
             val buttonOnClick = ButtonOnClick(context, buttonLighter, buttonIndex, buttonInputService)
             buttonOnClicks.add(buttonOnClick)
 
-            button.setOnClickListener {
+            button.onTouch { v, event ->
 
-                buttonOnClick.userOnClick()
+                if(event.action == MotionEvent.ACTION_DOWN) {
+
+                    buttonOnClick.userOnClick()
+
+                } else if(event.action == MotionEvent.ACTION_UP) {
+
+                    buttonOnClick.userOnRelease()
+                }
             }
         }
         val gameSequencePlayer = GameSequencePlayer(context, buttonOnClicks)

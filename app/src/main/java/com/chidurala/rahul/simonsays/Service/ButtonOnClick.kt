@@ -22,14 +22,15 @@ class ButtonOnClick(private val context: Context, private val buttonLighter: But
         if(ButtonOnClick.enabled) {
 
             buttonLighter.lightUp()
+        }
+    }
+
+    fun userOnRelease() {
+
+        if(ButtonOnClick.enabled) {
+
             buttonInputService.addInput(buttonId)
-
-            timer.schedule(delay = DifficultyService.difficultyService.getSpeed()) {
-
-                context.runOnUiThread {
-                    buttonLighter.darkenButton()
-                }
-            }
+            buttonLighter.darkenButton()
         }
     }
 
