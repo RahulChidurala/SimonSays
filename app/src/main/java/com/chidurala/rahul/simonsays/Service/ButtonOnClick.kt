@@ -9,7 +9,7 @@ import kotlin.concurrent.schedule
 /**
 * Created by Rahul Chidurala on 10/4/2017.
 */
-class ButtonOnClick(private val context: Context, private val buttonLighter: ButtonLighter, private val buttonId: Int, private val buttonInputService: ButtonInputService) {
+class ButtonOnClick(private val context: Context, private val buttonLighter: ButtonLighter) {
 
     companion object {
         var enabled: Boolean = true
@@ -29,7 +29,6 @@ class ButtonOnClick(private val context: Context, private val buttonLighter: But
 
         if(ButtonOnClick.enabled) {
 
-            buttonInputService.addInput(buttonId)
             buttonLighter.darkenButton()
         }
     }

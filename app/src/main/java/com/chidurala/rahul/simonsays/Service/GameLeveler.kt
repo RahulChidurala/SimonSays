@@ -2,16 +2,30 @@ package com.chidurala.rahul.simonsays.Service
 
 import android.app.AlertDialog
 import android.util.Log
+import com.chidurala.rahul.simonsays.Delegate.DisplayInfoDelegate
 import com.chidurala.rahul.simonsays.Delegate.GameOverDelegate
 
 /**
  * Created by Rahul Chidurala on 10/7/2017.
  *
  */
-class GameLeveler(var lives: Int, private var gameSequenceGenerator: GameSequenceGenerator, private var gameSequencePlayer: GameSequencePlayer, private val gameOverDelegate: GameOverDelegate? = null) {
+class GameLeveler(private var gameSequenceGenerator: GameSequenceGenerator, private var gameSequencePlayer: GameSequencePlayer, private val gameOverDelegate: GameOverDelegate? = null, private val totalLives: Int = 3) {
+
+    private var _lives: Int = totalLives
+
+    var lives: Int
+        get() = _lives
+        set(value) {
+
+            _lives = value
+            displayLives?.showInfo(value.toString())
+        }
 
     private val livesPerGame: Int = lives
     private var sequence: Sequence
+
+    // TODO: Remove display lives delegate from here
+    var displayLives: DisplayInfoDelegate? = null
 
     init {
         this.lives = lives

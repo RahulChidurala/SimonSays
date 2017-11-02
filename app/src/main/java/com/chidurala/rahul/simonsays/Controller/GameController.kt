@@ -1,9 +1,8 @@
 package com.chidurala.rahul.simonsays.Controller
 
 import android.content.Context
-import android.util.EventLog
-import android.util.Log
 import android.view.MotionEvent
+import com.chidurala.rahul.simonsays.Delegate.DisplayInfoDelegate
 import com.chidurala.rahul.simonsays.Delegate.GameOverDelegate
 import com.chidurala.rahul.simonsays.Delegate.UserInputDelegate
 import com.chidurala.rahul.simonsays.Model.GameBoard
@@ -24,6 +23,48 @@ class GameController(private val context: Context, gameBoard: GameBoard) : UserI
 
     private val  gameSequenceGenerator: GameSequenceGenerator
     private val buttonInputService: ButtonInputService
+
+    var displayLives: DisplayInfoDelegate? = null
+        set(value) {
+
+            if(gameLeveler != null) {
+
+                gameLeveler.displayLives = value
+            }
+        }
+
+    init {
+        buttonLighters = ArrayList()
+        val buttonCount = gameBoard.buttons.count()
+        gameSequenceGenerator = GameSequenceGenerator(gameBoard = gameBoard)
+        buttonInputService = ButtonInputService(this, gameSequenceGenerator.getCurrentSequence())
+        for (buttonIndex in 0..buttonCount-1) {
+
+            val button = gameBoard.buttons[buttonIndex]
+            val buttonLighter = ButtonLighter(button)
+            buttonLighters.add(buttonLighter)
+            buttonLighter.darkenButton()
+            val buttonOnClick = ButtonOnClick(context, buttonLighter)
+            buttonOnClicks.add(buttonOnClick)
+
+            button.onTouch { v, event ->
+
+                if(event.action == MotionEvent.ACTION_DOWN) {
+
+                    buttonOnClick.userOnClick()
+
+                } else if(event.action == MotionEvent.ACTION_UP) {
+
+                    buttonOnClick.userOnRelease()
+                    buttonInputService.addInput(buttonIndex)
+                }
+            }
+        }
+        val gameSequencePlayer = GameSequencePlayer(context, buttonOnClicks)
+        gameLeveler = GameLeveler( gameSequenceGenerator, gameSequencePlayer, this)
+        gameLeveler.displayLives = displayLives
+        gameSequenceChecker = GameSequenceChecker()
+    }
 
     fun startGame() {
 
@@ -87,36 +128,5 @@ class GameController(private val context: Context, gameBoard: GameBoard) : UserI
         }.show()
 
         gameSequenceGenerator.resetSequence()
-    }
-
-    init {
-        buttonLighters = ArrayList()
-        val buttonCount = gameBoard.buttons.count()
-        gameSequenceGenerator = GameSequenceGenerator(gameBoard = gameBoard)
-        buttonInputService = ButtonInputService(this, gameSequenceGenerator.getCurrentSequence())
-        for (buttonIndex in 0..buttonCount-1) {
-
-            val button = gameBoard.buttons[buttonIndex]
-            val buttonLighter = ButtonLighter(button)
-            buttonLighters.add(buttonLighter)
-            buttonLighter.darkenButton()
-            val buttonOnClick = ButtonOnClick(context, buttonLighter, buttonIndex, buttonInputService)
-            buttonOnClicks.add(buttonOnClick)
-
-            button.onTouch { v, event ->
-
-                if(event.action == MotionEvent.ACTION_DOWN) {
-
-                    buttonOnClick.userOnClick()
-
-                } else if(event.action == MotionEvent.ACTION_UP) {
-
-                    buttonOnClick.userOnRelease()
-                }
-            }
-        }
-        val gameSequencePlayer = GameSequencePlayer(context, buttonOnClicks)
-        gameLeveler = GameLeveler(3, gameSequenceGenerator, gameSequencePlayer, this)
-        gameSequenceChecker = GameSequenceChecker()
     }
 }
